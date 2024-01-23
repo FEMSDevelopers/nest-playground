@@ -6,8 +6,8 @@ import {
 import { SampleModel } from '../app/sample-route/_models/sample.model';
 
 const config = new AsyncApiDocumentBuilder()
-  .setTitle('Sample Service: Public Realtime API')
   .setDescription('This is the public realtime API for the Sample Service.')
+  .setTitle('Testing 234')
   .setVersion('1.0-beta')
   .build();
 
