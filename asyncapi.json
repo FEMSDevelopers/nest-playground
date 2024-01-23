@@ -1,0 +1,24 @@
+{
+  "asyncapi": "2.5.0",
+  "info": {
+    "title": "Alert Service: Public Realtime API",
+    "description": "This is the public realtime API for the Alert Service.",
+    "version": "1.0-beta",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": {},
+  "components": {
+    "schemas": {
+      "SampleModel": {
+        "type": "object",
+        "properties": {
+          "ts": { "type": "string" },
+          "message": { "type": "string" }
+        },
+        "required": ["ts", "message"]
+      }
+    }
+  },
+  "channels": {}
+}

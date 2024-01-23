@@ -1,0 +1,72 @@
+version: '3.9'
+services:
+  #  sample-service:
+  #    build:
+  #      dockerfile: Dockerfile
+  #      context: .
+  #      # Only will build development stage from our dockerfile
+  #      target: development
+  #    volumes:
+  #      - .:/usr/src/app
+  #    # Run a command against the development stage of the image
+  #    command: npm run start:dev
+  #    ports:
+  #      - 3001:3001
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:19.0.3
+    container_name: keycloak
+    ports:
+      - '8082:8082'
+    environment:
+      KEYCLOAK_ADMIN: $KEYCLOAK_USER
+      KEYCLOAK_ADMIN_PASSWORD: $KEYCLOAK_ADMIN_PASSWORD
+    command:
+      - start-dev
+
+  influxdb:
+    image: influxdb:2.4.0
+    container_name: influxdb
+    ports:
+      - '8086:8086'
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: $INFLUXDB_USER
+      DOCKER_INFLUXDB_INIT_PASSWORD: $INFLUXDB_INIT_PASSWORD
+      DOCKER_INFLUXDB_INIT_ORG: fractal
+      DOCKER_INFLUXDB_INIT_BUCKET: ems-web
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: $INFLUXDB_INIT_ADMIN_TOKEN
+
+  mongodb:
+    image: mongo:6.0.2
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+
+  redis:
+    image: redis:6.2-alpine
+    container_name: redis
+    ports:
+      - '6379:6379'
+
+  mosquitto-core:
+    image: eclipse-mosquitto:2.0.15
+    container_name: mosquitto-core
+    ports:
+      - '1883:1883'
+      - '9001:9001'
+    volumes:
+      - type: bind
+        source: ./.mosquitto/core/
+        target: /mosquitto/config/
+
+  mosquitto-web:
+    image: eclipse-mosquitto:2.0.15
+    container_name: mosquitto-web
+    ports:
+      - '1884:1884'
+      - '9002:9002'
+    volumes:
+      - type: bind
+        source: ./.mosquitto/web/
+        target: /mosquitto/config/

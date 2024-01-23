@@ -1,0 +1,134 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/status": {
+      "get": {
+        "operationId": "getStatus",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Status" }
+              }
+            }
+          },
+          "418": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllExceptionsResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Health Check"]
+      }
+    },
+    "/status/clear-cache": {
+      "get": {
+        "operationId": "clearCache",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "type": "object" } }
+            }
+          }
+        },
+        "tags": ["Health Check"]
+      }
+    },
+    "/sample-route": {
+      "get": {
+        "operationId": "listActiveAlerts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/SampleModel" }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllExceptionsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllExceptionsResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Sample Route"]
+      }
+    }
+  },
+  "info": {
+    "title": "Alert Service",
+    "description": "This service handles all EMS sample-route.",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "Status": {
+        "type": "object",
+        "properties": {
+          "healthy": { "type": "boolean" },
+          "message": { "type": "string" }
+        },
+        "required": ["healthy", "message"]
+      },
+      "ExceptionResponse": {
+        "type": "object",
+        "properties": {
+          "requestData": { "type": "object" },
+          "statusCode": { "type": "number" },
+          "message": { "type": "object" },
+          "path": { "type": "string" },
+          "error": { "type": "string" },
+          "stack": { "type": "string" }
+        },
+        "required": ["requestData", "statusCode", "message", "path", "stack"]
+      },
+      "AllExceptionsResponse": {
+        "type": "object",
+        "properties": {
+          "error": { "$ref": "#/components/schemas/ExceptionResponse" }
+        },
+        "required": ["error"]
+      },
+      "SampleModel": {
+        "type": "object",
+        "properties": {
+          "ts": { "type": "string" },
+          "message": { "type": "string" }
+        },
+        "required": ["ts", "message"]
+      }
+    }
+  }
+}

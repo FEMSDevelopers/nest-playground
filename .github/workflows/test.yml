@@ -1,0 +1,79 @@
+name: Tests
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+env:
+  NODE_VERSION: 20
+
+jobs:
+  lint_test:
+    name: Lint test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Code Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run lint test
+        run: npm run lint
+  snyk_test:
+    name: Snyk test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Code Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run lint test
+        run: SNYK_TOKEN=aa2c204b-6c2e-4bb2-8589-414185a10334 npm run test:snyk
+  unit_test:
+    name: Unit test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Code Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run unit test
+        run: npm run test:coverage
+  e2e_test:
+    name: E2E test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Code Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run e2e tests
+        run: npm run test:e2e
